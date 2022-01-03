@@ -45,7 +45,9 @@ func ValidateRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if claims.Username == "" {
+	// This is a yolo patch to make it work for auth0 which does not populate Username hence this path will always fail.
+	// https://github.com/vouch/vouch-proxy/issues/309
+	if claims.CustomClaims["sub"] == "" {
 		send401or200PublicAccess(w, r, errNoUser)
 		return
 	}
